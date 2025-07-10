@@ -106,12 +106,14 @@ APPWRITE_API_KEY=your-api-key
 
 # Google Analytics
 GOOGLE_APPLICATION_CREDENTIALS=./google-analytics-credentials.json
-GOOGLE_ANALYTICS_PROPERTY_ID=default-property-id
 
-# For Production (Vercel)
+# For Production (Vercel) - Required
 GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
 GOOGLE_CLIENT_EMAIL=service-account@project.iam.gserviceaccount.com
 GOOGLE_PROJECT_ID=your-google-project-id
+
+# Optional: Default Property ID (each client has their own in database)
+GOOGLE_ANALYTICS_PROPERTY_ID=default-property-id
 ```
 
 ## 📁 Project Structure

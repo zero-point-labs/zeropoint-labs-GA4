@@ -54,17 +54,24 @@ export class GoogleAnalyticsService {
       this.client = new BetaAnalyticsDataClient();
     }
 
-    // Use provided propertyId or fall back to environment variable
+    // Set Property ID if provided, otherwise it will need to be set before API calls
     this.propertyId = propertyId || process.env.GOOGLE_ANALYTICS_PROPERTY_ID || '';
-    
-    if (!this.propertyId) {
-      throw new Error('Property ID is required - either provide it as a parameter or set GOOGLE_ANALYTICS_PROPERTY_ID environment variable');
-    }
   }
 
-  // Static method to create instances with specific Property IDs
+  // Static method to create instances with specific Property IDs (recommended)
   static withPropertyId(propertyId: string): GoogleAnalyticsService {
+    if (!propertyId) {
+      throw new Error('Property ID is required when using withPropertyId()');
+    }
     return new GoogleAnalyticsService(propertyId);
+  }
+
+  // Method to set Property ID after initialization
+  setPropertyId(propertyId: string): void {
+    if (!propertyId) {
+      throw new Error('Property ID cannot be empty');
+    }
+    this.propertyId = propertyId;
   }
 
   // Method to get the current Property ID
@@ -72,8 +79,16 @@ export class GoogleAnalyticsService {
     return this.propertyId;
   }
 
+  // Private method to ensure Property ID is set before making API calls
+  private ensurePropertyId(): void {
+    if (!this.propertyId) {
+      throw new Error('Property ID is required for analytics operations. Use setPropertyId() or create instance with withPropertyId()');
+    }
+  }
+
   async testConnection(): Promise<boolean> {
     try {
+      this.ensurePropertyId();
       // Try to run a simple query to test the connection
       await this.getBasicMetrics({ startDate: '7daysAgo', endDate: 'today' });
       return true;
@@ -84,6 +99,8 @@ export class GoogleAnalyticsService {
   }
 
   async getBasicMetrics(dateRange: DateRange): Promise<AnalyticsData> {
+    this.ensurePropertyId();
+    
     try {
       const [response] = await this.client.runReport({
         property: `properties/${this.propertyId}`,
@@ -117,6 +134,8 @@ export class GoogleAnalyticsService {
   }
 
   async getTopPages(dateRange: DateRange, limit: number = 10): Promise<TopPage[]> {
+    this.ensurePropertyId();
+    
     try {
       const [response] = await this.client.runReport({
         property: `properties/${this.propertyId}`,
@@ -151,6 +170,8 @@ export class GoogleAnalyticsService {
   }
 
   async getDeviceBreakdown(dateRange: DateRange): Promise<DeviceBreakdown> {
+    this.ensurePropertyId();
+    
     try {
       const [response] = await this.client.runReport({
         property: `properties/${this.propertyId}`,
@@ -182,6 +203,8 @@ export class GoogleAnalyticsService {
   }
 
   async getGeoData(dateRange: DateRange, limit: number = 10): Promise<GeoData[]> {
+    this.ensurePropertyId();
+    
     try {
       const [response] = await this.client.runReport({
         property: `properties/${this.propertyId}`,
@@ -214,6 +237,8 @@ export class GoogleAnalyticsService {
   }
 
   async getRealTimeData(): Promise<AnalyticsData> {
+    this.ensurePropertyId();
+    
     try {
       const [response] = await this.client.runRealtimeReport({
         property: `properties/${this.propertyId}`,
@@ -236,9 +261,6 @@ export class GoogleAnalyticsService {
     }
   }
 }
-
-// Export a default instance using environment variables for backward compatibility
-export const googleAnalytics = new GoogleAnalyticsService();
 
 // Export the class for creating instances with specific Property IDs
 export default GoogleAnalyticsService; 

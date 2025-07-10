@@ -61,8 +61,9 @@ APPWRITE_ANALYTICS_COLLECTION_ID=analytics
 GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYOUR_PRIVATE_KEY_HERE\n-----END PRIVATE KEY-----\n"
 GOOGLE_CLIENT_EMAIL=your-service-account@your-project.iam.gserviceaccount.com
 GOOGLE_PROJECT_ID=your-google-cloud-project-id
-GOOGLE_ANALYTICS_PROPERTY_ID=your-default-property-id
 ```
+
+**Note**: `GOOGLE_ANALYTICS_PROPERTY_ID` is **optional** - each client uses their own Property ID stored in the database.
 
 ⚠️ **Important**: For the private key, make sure to:
 - Include the quotes
