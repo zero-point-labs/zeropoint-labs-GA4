@@ -12,8 +12,6 @@ import { useTheme } from '@/lib/theme-context';
 import { appwriteService, generateTrackingScript } from '@/lib/appwrite';
 import { hashPassword, validateClientData, generateSecurePassword } from '@/lib/auth';
 import { ArrowLeft, UserPlus, Loader2, AlertCircle, CheckCircle, Copy, User, Lock, Globe, Hash, RefreshCw } from 'lucide-react';
-import DebugConfig from '@/components/DebugConfig';
-import AppwriteClientTest from '@/components/AppwriteClientTest';
 
 interface ClientFormData {
   clientName: string;
@@ -188,10 +186,6 @@ export default function AddClientPage() {
               <ArrowLeft className="w-4 h-4" />
               Back to Homepage
             </Link>
-            
-            {/* Debug component - remove after fixing */}
-            <DebugConfig />
-            <AppwriteClientTest />
             
             <div className="flex justify-center mb-4">
               <div className={`w-16 h-16 rounded-full flex items-center justify-center border-2 ${
